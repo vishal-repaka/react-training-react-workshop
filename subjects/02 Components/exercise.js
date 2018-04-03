@@ -34,18 +34,57 @@ styles.panel = {
   padding: 10
 };
 
+const DATA = [
+  {
+    id: 1,
+    name: "USA",
+    description: "Land of the Free, Home of the brave"
+  },
+  {
+    id: 2,
+    name: "Brazil",
+    description: "Sunshine, beaches, and Carnival"
+  },
+  { id: 3, name: "Russia", description: "World Cup 2018!" }
+];
+
 class Tabs extends React.Component {
+  state = {
+    activeTabIndex: 0
+  };
+
+  selectTabIndex(activeTabIndex) {
+    this.setState({ activeTabIndex });
+  }
+
   render() {
+    const { data } = this.props;
+    const { activeTabIndex } = this.state;
+
+    const tabs = data.map((country, index) => {
+      const isActive = index === activeTabIndex;
+      const style = isActive ? styles.activeTab : styles.tab;
+
+      return (
+        <div
+          key={country.id}
+          className="Tab"
+          style={style}
+          onClick={() => this.selectTabIndex(index)}
+        >
+          {country.name}
+        </div>
+      );
+    });
+
+    const activeCountry = data[activeTabIndex];
+    const content = activeCountry && activeCountry.description;
+
     return (
       <div className="Tabs">
-        <div className="Tab" style={styles.activeTab}>
-          Active
-        </div>
-        <div className="Tab" style={styles.tab}>
-          Inactive
-        </div>
+        {tabs}
         <div className="TabPanel" style={styles.panel}>
-          Panel
+          {content}
         </div>
       </div>
     );
@@ -62,20 +101,6 @@ class App extends React.Component {
     );
   }
 }
-
-const DATA = [
-  {
-    id: 1,
-    name: "USA",
-    description: "Land of the Free, Home of the brave"
-  },
-  {
-    id: 2,
-    name: "Brazil",
-    description: "Sunshine, beaches, and Carnival"
-  },
-  { id: 3, name: "Russia", description: "World Cup 2018!" }
-];
 
 ReactDOM.render(
   <App countries={DATA} />,
