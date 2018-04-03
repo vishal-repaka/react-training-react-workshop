@@ -29,8 +29,24 @@ const DATA = {
   ]
 };
 
+const titleHeader = <h1>{DATA.title}</h1>;
+
+const dataItems = (
+  <ul>
+    {DATA.items
+      .filter(item => item.type == "mexican")
+      .sort(sortBy("name"))
+      .map(item => <li key={item.id}>{item.name}</li>)}
+  </ul>
+);
+
 function Menu() {
-  return <div>Open the console, you have failing tests.</div>;
+  return (
+    <div>
+      {titleHeader}
+      {dataItems}
+    </div>
+  );
 }
 
 ReactDOM.render(<Menu />, document.getElementById("app"), () => {
